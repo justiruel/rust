@@ -236,7 +236,7 @@ async fn main() {
 - Node.js: semua berbasis GC, aman tapi ada overhead.
 - Rust: tetap tanpa GC, async tetap mengikuti aturan ownership.
 
-# Catatan Borrowing & Non-Lexical Lifetimes (NLL) di Rust
+# 📘 Catatan Borrowing & Non-Lexical Lifetimes (NLL) di Rust
 
 ## 1. Kasus Studi
 
