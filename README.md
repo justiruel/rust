@@ -199,5 +199,5 @@ async fn run() {
 }
 ```
 ### Analogi:
--Node.js: ada sekretaris (event loop) yang mencatat janji, memanggil balik kalau waktunya tiba.
--Rust: janji (Future) adalah mesin kecil yang berhenti sementara, lalu dilanjutkan oleh eksekutor saat siap.
+- Node.js: ada sekretaris (event loop) yang mencatat janji, memanggil balik kalau waktunya tiba.
+- Rust: janji (Future) adalah mesin kecil yang berhenti sementara, lalu dilanjutkan oleh eksekutor saat siap.
