@@ -201,3 +201,37 @@ async fn run() {
 ### Analogi:
 - Node.js: ada sekretaris (event loop) yang mencatat janji, memanggil balik kalau waktunya tiba.
 - Rust: janji (Future) adalah mesin kecil yang berhenti sementara, lalu dilanjutkan oleh eksekutor saat siap.
+
+## 13. Async: Node.js vs Rust
+### Node.js:
+- Menggunakan event loop + Promise.
+- Semua async task non-blocking, cocok untuk I/O bound.
+- Memory dikelola oleh GC.
+```
+async function run() {
+  const a = Promise.resolve("A selesai");
+  const b = Promise.resolve("B selesai");
+  const results = await Promise.all([a, b]);
+  console.log(results);
+}
+run();
+```
+
+### Rust:
+- Menggunakan async/await + executor (Tokio/async-std).
+- Memory tetap dikelola dengan ownership, tanpa GC.
+- Cocok untuk high-performance async system.
+```
+use futures::future;
+#[tokio::main]
+async fn main() {
+    let f1 = async { "A selesai" };
+    let f2 = async { "B selesai" };
+    let results = future::join_all(vec![f1, f2]).await;
+    println!("{:?}", results);
+}
+```
+
+### 📌 Perbedaan inti:
+- Node.js: semua berbasis GC, aman tapi ada overhead.
+- Rust: tetap tanpa GC, async tetap mengikuti aturan ownership.
