@@ -90,6 +90,22 @@ fn main() {
 }
 ```
 
+- di mutable borrow, satu chain aktif (walau panjang) → aman.
+Contoh:
+```rust
+let mut s = String::from("halo");
+let a = &mut s;       // pinjam s
+let b = &mut a;       // pinjam a
+let c = &mut b;       // pinjam b
+c.push_str(" dunia"); // tetap cuma 1 jalur → oke
+```
+- ❌ Dua jalur aktif ke data yang sama → error.
+Contoh:
+```rust
+let mut s = String::from("halo");
+let a = &mut s;
+let b = &mut s; 
+```
 ---
 
 ## 7. Aturan Borrowing (Aliasing XOR Mutability)
@@ -131,7 +147,7 @@ fn main() {
 - `capacity` → ruang yang sudah dialokasikan di heap.
 
 ```rust
-fn main() {
+fn main() {S
     let mut v = Vec::new();
     v.push(1);
     println!("len = {}, capacity = {}", v.len(), v.capacity());
