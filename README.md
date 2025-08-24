@@ -147,7 +147,7 @@ fn main() {
 - `capacity` → ruang yang sudah dialokasikan di heap.
 
 ```rust
-fn main() {S
+fn main() {
     let mut v = Vec::new();
     v.push(1);
     println!("len = {}, capacity = {}", v.len(), v.capacity());
