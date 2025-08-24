@@ -161,24 +161,24 @@ fn main() {
 ---
 
 ## 11. Perbandingan: Garbage Collection vs Ownership
-Garbage Collection (misalnya di Java, Go, JavaScript):
-Runtime ada GC (Garbage Collector) yang memantau memory.
-GC akan pause program sesekali untuk membersihkan data yang tidak direferensikan.
-Overhead runtime lebih besar, ada kemungkinan stop-the-world pause.
-Rust (Ownership + Borrowing):
-Tidak ada GC.
-Memory dikelola di compile time lewat aturan ownership.
-Heap otomatis dibebaskan ketika owner keluar scope.
-Tidak ada pause runtime → performa konsisten.
-Analogi:
-GC = ada petugas kebersihan yang patroli membersihkan sampah, kadang mengganggu aktivitas.
-Rust = setiap orang wajib membersihkan sampahnya sendiri sebelum keluar ruangan.
+### Garbage Collection (misalnya di Java, Go, JavaScript):
+- Runtime ada GC (Garbage Collector) yang memantau memory.
+- GC akan pause program sesekali untuk membersihkan data yang tidak direferensikan.
+- Overhead runtime lebih besar, ada kemungkinan stop-the-world pause.
+### Rust (Ownership + Borrowing):
+- Tidak ada GC.
+- Memory dikelola di compile time lewat aturan ownership.
+- Heap otomatis dibebaskan ketika owner keluar scope.
+- Tidak ada pause runtime → performa konsisten.
+### Analogi:
+- GC = ada petugas kebersihan yang patroli membersihkan sampah, kadang mengganggu aktivitas.
+- Rust = setiap orang wajib membersihkan sampahnya sendiri sebelum keluar ruangan.
 
 ## 12. Perbandingan Async: Node.js vs Rust
-Node.js (Promise / async-await):
-Single-threaded event loop.
-Async dikerjakan lewat callback queue (task diparkir, dijalankan ketika I/O selesai).
-Memory manajemen ditangani GC (developer tidak mengurus lifetime).
+### Node.js (Promise / async-await):
+- Single-threaded event loop.
+- Async dikerjakan lewat callback queue (task diparkir, dijalankan ketika I/O selesai).
+- Memory manajemen ditangani GC (developer tidak mengurus lifetime).
 Contoh Node.js:
 ```rust
 async function run() {
@@ -186,10 +186,10 @@ async function run() {
     console.log(data);
 }
 ```
-Rust (async / Future):
-async fn menghasilkan Future.
-Future adalah state machine, berjalan hanya jika dijalankan executor.
-Memory tetap aman karena ownership & borrow checker.
+### Rust (async / Future):
+- async fn menghasilkan Future.
+- Future adalah state machine, berjalan hanya jika dijalankan executor.
+- Memory tetap aman karena ownership & borrow checker.
 
 Contoh Rust:
 ```rust
@@ -198,6 +198,6 @@ async fn run() {
     println!("{}", data);
 }
 ```
-Analogi:
-Node.js: ada sekretaris (event loop) yang mencatat janji, memanggil balik kalau waktunya tiba.
-Rust: janji (Future) adalah mesin kecil yang berhenti sementara, lalu dilanjutkan oleh eksekutor saat siap.
+### Analogi:
+-Node.js: ada sekretaris (event loop) yang mencatat janji, memanggil balik kalau waktunya tiba.
+-Rust: janji (Future) adalah mesin kecil yang berhenti sementara, lalu dilanjutkan oleh eksekutor saat siap.
