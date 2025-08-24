@@ -67,6 +67,8 @@ fn main() {
     let s = String::from("halo"); // pointer di stack, isi "halo" di heap
 }
 ```
+- untuk tipe data yang kecil dan jelas ukurannya seperti i32, bool, f64 maka value akan langsung disimpan di stack
+- sedangkan tipe data yang besar atau ukurannya belum pasti misalkan String, Vec<T> maka nilai akan disimpan di heap, sedangkan di stack yg disimpan hanya pointer (alamat heap), len, dan capacity 
 
 ---
 
