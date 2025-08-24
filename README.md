@@ -235,3 +235,73 @@ async fn main() {
 ### 📌 Perbedaan inti:
 - Node.js: semua berbasis GC, aman tapi ada overhead.
 - Rust: tetap tanpa GC, async tetap mengikuti aturan ownership.
+
+# Catatan Borrowing & Non-Lexical Lifetimes (NLL) di Rust
+
+## 1. Kasus Studi
+
+```rust
+let mut mutated_owner = String::from("halo");
+
+let borrow_mutated_owner = &mut mutated_owner;
+println!("borrow_mutated_owner : {}", borrow_mutated_owner);
+borrow_mutated_owner.push_str("!!!");
+
+let borrow_immutated_owner = &mutated_owner;
+println!("borrow_immutated_owner : {}", borrow_immutated_owner);
+```
+
+### 🔑 Analisis
+
+* Borrow mutable `borrow_mutated_owner` **hanya berlaku sampai terakhir kali digunakan** (`push_str` dipanggil).
+* Setelah itu, Rust menganggap borrow sudah "mati".
+* Baru kemudian `borrow_immutated_owner` bisa dibuat tanpa melanggar aturan borrow.
+
+---
+
+## 2. Aturan Borrowing di Rust
+
+* **Immutable borrow (`&T`)**: bisa banyak peminjam, read-only.
+* **Mutable borrow (`&mut T`)**: hanya boleh ada satu peminjam dalam satu waktu.
+* **Non-Lexical Lifetimes (NLL)**: borrow dianggap selesai **setelah terakhir kali digunakan**, tidak harus menunggu akhir scope.
+
+---
+
+## 3. Ownership vs Borrow
+
+| Konsep    | Penjelasan                                                                    | Contoh                            |
+| --------- | ----------------------------------------------------------------------------- | --------------------------------- |
+| Ownership | Pemilik data, bertanggung jawab atas alokasi + dealokasi heap                 | `let s = String::from("halo");`   |
+| Borrow    | Pinjaman data, bisa immutable atau mutable, tidak mempengaruhi lifetime owner | `let r = &s;` / `let r = &mut s;` |
+
+---
+
+## 4. Contoh Praktis dengan NLL
+
+```rust
+fn main() {
+    let mut s = String::from("halo");
+
+    let borrow_mut = &mut s;
+    borrow_mut.push_str(" dunia"); // terakhir kali dipakai
+
+    // borrow_mut sudah "mati" di sini
+    let borrow_immut = &s;
+    println!("{}", borrow_immut); // aman
+}
+```
+
+---
+
+## 5. Analogi
+
+* **Owner** = pemilik rumah (selama owner hidup, rumah ada; keluar scope → rumah dirobohkan).
+* **Borrow** = pinjam kunci rumah (boleh dipakai sampai terakhir digunakan; setelah itu dianggap kunci dikembalikan).
+
+---
+
+### ✅ Kesimpulan
+
+* Kode tidak error karena Rust tahu borrow mutable sudah selesai digunakan sebelum borrow berikutnya dibuat.
+* NLL membuat borrow lebih fleksibel dan mencegah error borrow yang sebenarnya sudah tidak aktif.
+* Memahami konsep ini penting untuk menulis Rust yang aman dan efisien.
