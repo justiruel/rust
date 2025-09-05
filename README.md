@@ -302,9 +302,9 @@ fn main() {
 * Kode tidak error karena Rust tahu borrow mutable sudah selesai digunakan sebelum borrow berikutnya dibuat.
 ---
 
-## 6. Rust Attributes (`#[...]`)
+# 📘 Rust Attributes (`#[...]`)
 
-### Apa itu Attribute?
+## Apa itu Attribute?
 
 Di Rust, tanda `#[...]` disebut **attribute**.  
 Attribute adalah *metadata* yang ditambahkan pada item (struct, enum, function, module, crate, dll) untuk memberi instruksi tambahan kepada compiler, linter, atau macro.  
@@ -316,16 +316,16 @@ Ada dua bentuk utama:
 
 Attribute mirip dengan **annotation** di Java (`@Override`) atau **decorator** di Python (`@dataclass`).
 
-### Jenis-Jenis Attribute yang Umum
+## Jenis-Jenis Attribute yang Umum
 
-#### 1. Derive
+### 1. Derive
 Menghasilkan implementasi otomatis untuk trait standar.
 ```rust
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 struct Point { x: i32, y: i32 }
 ```
 
-#### 2. Debugging dan Testing
+### 2. Debugging dan Testing
 ```rust
 #[test]
 fn it_works() { assert_eq!(2 + 2, 4); }
@@ -340,7 +340,7 @@ fn test_skip() { assert_eq!(1, 2); }
 mod tests { /* hanya dikompilasi saat `cargo test` */ }
 ```
 
-#### 3. Conditional Compilation (cfg)
+### 3. Conditional Compilation (cfg)
 ```rust
 #[cfg(target_os = "linux")]
 fn only_on_linux() {}
@@ -355,7 +355,7 @@ fn main() {
 }
 ```
 
-#### 4. Allow / Deny / Warn / Forbid
+### 4. Allow / Deny / Warn / Forbid
 
 Mengatur linter (rustc + clippy).
 ```rust
@@ -369,7 +369,7 @@ fn peringatan() {}
 fn wajib_dok() {}
 ```
 
-#### 5. Inline dan Performance Hints
+### 5. Inline dan Performance Hints
 ```rust
 #[inline]
 fn tambah(a: i32, b: i32) -> i32 { a + b }
@@ -384,14 +384,14 @@ fn error_handler() {}
 fn hitung() -> i32 { 5 }
 ```
 
-#### 6. Documentation
+### 6. Documentation
 ```rust
 /// Ini adalah doc comment untuk fungsi
 #[doc = "Komentar dokumentasi alternatif"]
 fn fungsi() {}
 ```
 
-#### 7. Macro Related
+### 7. Macro Related
 ````rust
 #[macro_export]
 macro_rules! my_macro { () => { println!("Hi"); }; }
@@ -400,7 +400,7 @@ macro_rules! my_macro { () => { println!("Hi"); }; }
 pub fn my_proc_macro(input: TokenStream) -> TokenStream { ... }
 ````
 
-#### 8. Representation (repr)
+### 8. Representation (repr)
 Mengontrol layout struct/enum di memory.
 ```rust
 #[repr(C)]
@@ -410,7 +410,7 @@ struct MyStruct { a: i32, b: u8 }
 enum Status { Ok = 1, Err = 2 }
 ```
 
-#### 9. Panic, Safety, dan Lain-lain
+### 9. Panic, Safety, dan Lain-lain
 ```rust
 #[track_caller]
 fn log_error() {}
@@ -422,7 +422,7 @@ fn my_panic(info: &PanicInfo) -> ! { loop {} }
 pub extern "C" fn exported() {}
 ```
 
-#### 10. Crate-Level Attributes
+### 10. Crate-Level Attributes
 Ditulis dengan #![...], biasanya di lib.rs atau main.rs.
 ```rust
 #![allow(unused_imports)]
