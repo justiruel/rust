@@ -298,10 +298,137 @@ fn main() {
 * **Owner** = pemilik rumah (selama owner hidup, rumah ada; keluar scope → rumah dirobohkan).
 * **Borrow** = pinjam kunci rumah (boleh dipakai sampai terakhir digunakan; setelah itu dianggap kunci dikembalikan).
 
+### ✅ Kesimpulan
+* Kode tidak error karena Rust tahu borrow mutable sudah selesai digunakan sebelum borrow berikutnya dibuat.
 ---
 
-### ✅ Kesimpulan
+## 6. Rust Attributes (`#[...]`)
 
-* Kode tidak error karena Rust tahu borrow mutable sudah selesai digunakan sebelum borrow berikutnya dibuat.
+### Apa itu Attribute?
+
+Di Rust, tanda `#[...]` disebut **attribute**.  
+Attribute adalah *metadata* yang ditambahkan pada item (struct, enum, function, module, crate, dll) untuk memberi instruksi tambahan kepada compiler, linter, atau macro.  
+
+Ada dua bentuk utama:
+
+- `#[...]` → attribute untuk item tertentu (function, struct, enum, dll).
+- `#![...]` → attribute level **crate** atau **module** (biasanya di paling atas file `lib.rs` atau `main.rs`).
+
+Attribute mirip dengan **annotation** di Java (`@Override`) atau **decorator** di Python (`@dataclass`).
+
+### Jenis-Jenis Attribute yang Umum
+
+#### 1. Derive
+Menghasilkan implementasi otomatis untuk trait standar.
+```rust
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+struct Point { x: i32, y: i32 }
+```
+
+#### 2. Debugging dan Testing
+```rust
+#[test]
+fn it_works() { assert_eq!(2 + 2, 4); }
+
+#[should_panic]
+fn test_panic() { panic!("harus panic"); }
+
+#[ignore]
+fn test_skip() { assert_eq!(1, 2); }
+
+#[cfg(test)]
+mod tests { /* hanya dikompilasi saat `cargo test` */ }
+```
+
+#### 3. Conditional Compilation (cfg)
+```rust
+#[cfg(target_os = "linux")]
+fn only_on_linux() {}
+
+#[cfg(feature = "experimental")]
+fn only_if_feature_enabled() {}
+
+fn main() {
+    if cfg!(debug_assertions) {
+        println!("Running in debug mode");
+    }
+}
+```
+
+#### 4. Allow / Deny / Warn / Forbid
+
+Mengatur linter (rustc + clippy).
+```rust
+#[allow(dead_code)]
+fn tidak_dipakai() {}
+
+#[warn(unused_variables)]
+fn peringatan() {}
+
+#[deny(missing_docs)]
+fn wajib_dok() {}
+```
+
+#### 5. Inline dan Performance Hints
+```rust
+#[inline]
+fn tambah(a: i32, b: i32) -> i32 { a + b }
+
+#[inline(always)]
+fn wajib_inline() -> i32 { 42 }
+
+#[cold]
+fn error_handler() {}
+
+#[must_use]
+fn hitung() -> i32 { 5 }
+```
+
+#### 6. Documentation
+```rust
+/// Ini adalah doc comment untuk fungsi
+#[doc = "Komentar dokumentasi alternatif"]
+fn fungsi() {}
+```
+
+#### 7. Macro Related
+````rust
+#[macro_export]
+macro_rules! my_macro { () => { println!("Hi"); }; }
+
+#[proc_macro]
+pub fn my_proc_macro(input: TokenStream) -> TokenStream { ... }
+````
+
+#### 8. Representation (repr)
+Mengontrol layout struct/enum di memory.
+```rust
+#[repr(C)]
+struct MyStruct { a: i32, b: u8 }
+
+#[repr(u8)]
+enum Status { Ok = 1, Err = 2 }
+```
+
+#### 9. Panic, Safety, dan Lain-lain
+```rust
+#[track_caller]
+fn log_error() {}
+
+#[panic_handler]
+fn my_panic(info: &PanicInfo) -> ! { loop {} }
+
+#[no_mangle]
+pub extern "C" fn exported() {}
+```
+
+#### 10. Crate-Level Attributes
+Ditulis dengan #![...], biasanya di lib.rs atau main.rs.
+```rust
+#![allow(unused_imports)]
+#![deny(missing_docs)]
+#![no_std]   // untuk embedded (tanpa std lib)
+```
+
 * NLL membuat borrow lebih fleksibel dan mencegah error borrow yang sebenarnya sudah tidak aktif.
 * Memahami konsep ini penting untuk menulis Rust yang aman dan efisien.
